@@ -34,6 +34,99 @@ class XYZControlsSizer(wx.GridBagSizer):
         self.Add(root.zb, pos = (0, 2), flag = wx.ALIGN_CENTER)
         wx.CallAfter(root.xyb.SetFocus)
 
+def add_3dpav_controls(self, root, parentpanel, extra_buttons = None, mini_mode = False):
+    standalone_mode = extra_buttons is not None
+    base_line = 1 if standalone_mode else 2
+
+    #if standalone_mode:
+    #    gauges_base_line = base_line + 10
+    #elif mini_mode and root.display_graph:
+    #    gauges_base_line = base_line + 7
+    #else:
+    #    gauges_base_line = base_line + 6
+    #tempdisp_line = gauges_base_line + (2 if root.display_gauges else 0)
+    #if mini_mode and root.display_graph:
+    #    e_base_line = base_line + 3
+    #else:
+    #    e_base_line = base_line + 2
+
+    #pos_mapping = {
+    #    "htemp_label": (base_line + 0, 0),
+    #    "htemp_off": (base_line + 0, 2),
+    #    "htemp_val": (base_line + 0, 3),
+    #    "htemp_set": (base_line + 0, 4),
+    #    "btemp_label": (base_line + 1, 0),
+    #    "btemp_off": (base_line + 1, 2),
+    #    "btemp_val": (base_line + 1, 3),
+    #    "btemp_set": (base_line + 1, 4),
+    #    "ebuttons": (e_base_line + 0, 0),
+    #    "esettings": (e_base_line + 1, 0),
+    #    "speedcontrol": (e_base_line + 2, 0),
+    #    "flowcontrol": (e_base_line + 3, 0),
+    #    "htemp_gauge": (gauges_base_line + 0, 0),
+    #    "btemp_gauge": (gauges_base_line + 1, 0),
+    #    "tempdisp": (tempdisp_line, 0),
+    #    "extrude": (3, 0),
+    #    "reverse": (3, 2),
+    #    "3dpav_init": (3, 4),
+    #}
+
+    #span_mapping = {
+    #    "htemp_label": (1, 2),
+    #    "htemp_off": (1, 1),
+    #    "htemp_val": (1, 1),
+    #    "htemp_set": (1, 1 if root.display_graph else 2),
+    #    "btemp_label": (1, 2),
+    #    "btemp_off": (1, 1),
+    #    "btemp_val": (1, 1),
+    #    "btemp_set": (1, 1 if root.display_graph else 2),
+    #    "ebuttons": (1, 5 if root.display_graph else 6),
+    #    "esettings": (1, 5 if root.display_graph else 6),
+    #    "speedcontrol": (1, 5 if root.display_graph else 6),
+    #    "flowcontrol": (1, 5 if root.display_graph else 6),
+    #    "htemp_gauge": (1, 5 if mini_mode else 6),
+    #    "btemp_gauge": (1, 5 if mini_mode else 6),
+    #    "tempdisp": (1, 5 if mini_mode else 6),
+    #    "extrude": (1, 2),
+    #    "reverse": (1, 3),
+    #    "3dpav_init": (1, 4),
+    #}
+
+    #if standalone_mode:
+    #    pos_mapping["tempgraph"] = (base_line + 6, 0)
+    #    span_mapping["tempgraph"] = (3, 2)
+    #elif mini_mode:
+    #    pos_mapping["tempgraph"] = (base_line + 2, 0)
+    #    span_mapping["tempgraph"] = (1, 5)
+    #else:
+    #    pos_mapping["tempgraph"] = (base_line + 0, 5)
+    #    span_mapping["tempgraph"] = (5, 1)
+
+    #if mini_mode:
+    #    pos_mapping["etool_label"] = (0, 0)
+    #    pos_mapping["etool_val"] = (0, 1)
+    #    pos_mapping["edist_label"] = (0, 2)
+    #    pos_mapping["edist_val"] = (0, 3)
+    #    pos_mapping["edist_unit"] = (0, 4)
+    #else:
+    #    pos_mapping["edist_label"] = (0, 0)
+    #    pos_mapping["edist_val"] = (1, 0)
+    #    pos_mapping["edist_unit"] = (1, 1)
+    #    pos_mapping["efeed_label"] = (0, 2)
+    #    pos_mapping["efeed_val"] = (1, 2)
+    #    pos_mapping["efeed_unit"] = (1, 3)
+
+    #def add(name, widget, *args, **kwargs):
+    #    kwargs["pos"] = pos_mapping[name]
+    #    if name in span_mapping:
+    #        kwargs["span"] = span_mapping[name]
+    #    if "container" in kwargs:
+    #        container = kwargs["container"]
+    #        del kwargs["container"]
+    #    else:
+    #        container = self
+    #    container.Add(widget, *args, **kwargs)
+
 def add_extra_controls(self, root, parentpanel, extra_buttons = None, mini_mode = False):
     standalone_mode = extra_buttons is not None
     base_line = 1 if standalone_mode else 2
@@ -68,6 +161,7 @@ def add_extra_controls(self, root, parentpanel, extra_buttons = None, mini_mode 
         "tempdisp": (tempdisp_line, 0),
         "extrude": (3, 0),
         "reverse": (3, 2),
+        "3dpav_init": (3, 4),
     }
 
     span_mapping = {
@@ -88,6 +182,7 @@ def add_extra_controls(self, root, parentpanel, extra_buttons = None, mini_mode 
         "tempdisp": (1, 5 if mini_mode else 6),
         "extrude": (1, 2),
         "reverse": (1, 3),
+        "3dpav_init": (1, 4),
     }
 
     if standalone_mode:
@@ -170,9 +265,9 @@ def add_extra_controls(self, root, parentpanel, extra_buttons = None, mini_mode 
     root.btemp.SetValue(str(root.settings.last_bed_temperature))
     root.htemp.SetValue(str(root.settings.last_temperature))
 
-    # added for an error where only the bed would get (pla) or (abs).
-    # This ensures, if last temp is a default pla or abs, it will be marked so.
-    # if it is not, then a (user) remark is added. This denotes a manual entry
+    #added for an error where only the bed would get (pla) or (abs).
+    #This ensures, if last temp is a default pla or abs, it will be marked so.
+    #if it is not, then a (user) remark is added. This denotes a manual entry
 
     for i in btemp_choices:
         if i.split()[0] == str(root.settings.last_bed_temperature).split('.')[0] or i.split()[0] == str(root.settings.last_bed_temperature):
@@ -386,8 +481,61 @@ class ControlsSizer(wx.GridBagSizer):
     def __init__(self, root, parentpanel = None, standalone_mode = False, mini_mode = False):
         super(ControlsSizer, self).__init__()
         if not parentpanel: parentpanel = root.panel
-        if mini_mode: self.make_mini(root, parentpanel)
-        else: self.make_standard(root, parentpanel, standalone_mode)
+        self.make_3dpav(root, parentpanel, standalone_mode)
+        #if mini_mode: self.make_mini(root, parentpanel)
+        #else: self.make_standard(root, parentpanel, standalone_mode)
+
+    def make_3dpav(self, root, parentpanel, standalone_mode):
+        lltspanel = root.newPanel(parentpanel)
+        llts = wx.BoxSizer(wx.HORIZONTAL)
+        lltspanel.SetSizer(llts)
+        self.Add(lltspanel, pos = (0, 0), span = (1, 6))
+        xyzpanel = root.newPanel(parentpanel)
+        self.xyzsizer = XYZControlsSizer(root, xyzpanel)
+        xyzpanel.SetSizer(self.xyzsizer)
+        #self.Add(xyzpanel, pos = (1, 0), span = (1, 6), flag = wx.ALIGN_CENTER)
+
+        self.extra_buttons = {}
+        pos_mapping = {
+                       "3dpav_init": (4, 0),
+                       #"extrude": (4, 0),
+                       "reverse": (4, 2),
+                       }
+        span_mapping = {
+                        "3dpav_init": (1, 2),
+                        #"extrude": (1, 2),
+                        "reverse": (1, 3),
+                        }
+        for key, desc in root.cpbuttons.items():
+            if not standalone_mode and key in ["extrude", "reverse", "3dpav_init"]:
+                continue
+            panel = lltspanel if key == "motorsoff" else parentpanel
+            btn = make_custom_button(root, panel, desc)
+            #if key == "motorsoff":
+            #    llts.Add(btn)
+            #elif not standalone_mode:
+            self.Add(btn, pos = pos_mapping[key], span = span_mapping[key], flag = wx.EXPAND)
+            #else:
+            #    self.extra_buttons[key] = btn
+
+        #root.xyfeedc = wx.SpinCtrl(lltspanel, -1, str(root.settings.xy_feedrate), min = 0, max = 50000, size = (130, -1))
+        #root.xyfeedc.SetToolTip(wx.ToolTip(_("Set Maximum Speed for X & Y axes (mm/min)")))
+        #llts.Add(wx.StaticText(lltspanel, -1, _("XY:")), flag = wx.ALIGN_CENTER_VERTICAL)
+        #llts.Add(root.xyfeedc)
+        #llts.Add(wx.StaticText(lltspanel, -1, _("mm/min Z:")), flag = wx.ALIGN_CENTER_VERTICAL)
+        #root.zfeedc = wx.SpinCtrl(lltspanel, -1, str(root.settings.z_feedrate), min = 0, max = 50000, size = (130, -1))
+        #root.zfeedc.SetToolTip(wx.ToolTip(_("Set Maximum Speed for Z axis (mm/min)")))
+        #llts.Add(root.zfeedc,)
+
+        #root.xyfeedc.Bind(wx.EVT_SPINCTRL, root.setfeeds)
+        #root.zfeedc.Bind(wx.EVT_SPINCTRL, root.setfeeds)
+        #root.xyfeedc.Bind(wx.EVT_TEXT, root.setfeeds)
+        #root.zfeedc.Bind(wx.EVT_TEXT, root.setfeeds)
+        #root.zfeedc.SetBackgroundColour((180, 255, 180))
+        #root.zfeedc.SetForegroundColour("black")
+
+        if not standalone_mode:
+            add_3dpav_controls(self, root, parentpanel, None)
 
     def make_standard(self, root, parentpanel, standalone_mode):
         lltspanel = root.newPanel(parentpanel)
