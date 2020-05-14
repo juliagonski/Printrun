@@ -517,13 +517,15 @@ class ControlsSizer(wx.GridBagSizer):
         self.extra_buttons = {}
         pos_mapping = {
                        "3dpav_init": (4, 0),
+                       "run": (4, 2),
                        #"extrude": (4, 0),
-                       "reverse": (4, 2),
+                       #"reverse": (4, 2),
                        }
         span_mapping = {
                         "3dpav_init": (1, 2),
+                        "run": (1, 3),
                         #"extrude": (1, 2),
-                        "reverse": (1, 3),
+                        #"reverse": (1, 3),
                         }
         for key, desc in root.cpbuttons.items():
             #if not standalone_mode and key in ["extrude", "reverse", "3dpav_init"]:

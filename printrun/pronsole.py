@@ -1659,6 +1659,23 @@ class pronsole(cmd.Cmd):
             self.spool_manager.editLength(-length,
                 extruder = self.current_tool)
 
+    def do_run_final(self):
+        self.log(_("Running ventilation protocol, use ^C to interrupt (just 2 iterations for now)."))
+        self.log(_("Updating values in realtime"))
+        self.monitoring = 1
+        self.log(_(";compress"))
+        self.p.send_now("G1 F2500 Z116 Y100 E14")
+        self.log(_(";decompress"))
+        self.p.send_now("G1 F1250 Z130 Y145 E-14")
+        #try:
+        #    while True:
+        #      self.log(_(";compress"))
+        #      self.p.send_now("G1 F2500 Z116 Y100 E14")
+        #      self.log(_(";decompress"))
+        #      self.p.send_now("G1 F1250 Z130 Y145 E-14")
+        #except KeyboardInterrupt:
+        #    if self.silent is False: self.log(_("Done ventilating."))
+
     def do_3dpavinit_final(self):
       self.log(_("Initializing 3DPaV protocol...."))
       self.p.send_now("M502")

@@ -168,6 +168,7 @@ class PronterWindow(MainWindow, pronsole.pronsole):
             #"extrude": SpecialButton(_("Extrude"), ("pront_extrude"), (225, 200, 200), _("Advance extruder by set length")),
             #"reverse": SpecialButton(_("Reverse"), ("pront_reverse"), (225, 200, 200), _("Reverse extruder by set length")),
             "3dpav_init": SpecialButton(_("3DPaV Initialize"), ("3dpav_init"), (225, 200, 200), _("initialize 3dpav protocol")),
+            "run": SpecialButton(_("Run 400mL 16BPM"), ("run"), (225, 200, 200), _("run 400mL_16BPM")),
         }
         self.custombuttons = []
         self.btndict = {}
@@ -425,6 +426,12 @@ class PronterWindow(MainWindow, pronsole.pronsole):
             self.log(_("Please pause or stop print before setting up 3DPaV protocol."))
             return
         self.do_3dpavinit_final()
+
+    def do_run(self, l = ""):
+        if self.p.printing and not self.paused:
+            self.log(_("Please pause or stop print before starting a new run."))
+            return
+        self.do_run_final()
 
     def do_settemp(self, l = ""):
         try:
