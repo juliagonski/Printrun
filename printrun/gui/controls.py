@@ -38,99 +38,6 @@ def add_3dpav_controls(self, root, parentpanel, extra_buttons = None, mini_mode 
     standalone_mode = extra_buttons is not None
     base_line = 1 if standalone_mode else 2
 
-    #if standalone_mode:
-    #    gauges_base_line = base_line + 10
-    #elif mini_mode and root.display_graph:
-    #    gauges_base_line = base_line + 7
-    #else:
-    #    gauges_base_line = base_line + 6
-    #tempdisp_line = gauges_base_line + (2 if root.display_gauges else 0)
-    #if mini_mode and root.display_graph:
-    #    e_base_line = base_line + 3
-    #else:
-    #    e_base_line = base_line + 2
-
-    #pos_mapping = {
-    #    "htemp_label": (base_line + 0, 0),
-    #    "htemp_off": (base_line + 0, 2),
-    #    "htemp_val": (base_line + 0, 3),
-    #    "htemp_set": (base_line + 0, 4),
-    #    "btemp_label": (base_line + 1, 0),
-    #    "btemp_off": (base_line + 1, 2),
-    #    "btemp_val": (base_line + 1, 3),
-    #    "btemp_set": (base_line + 1, 4),
-    #    "ebuttons": (e_base_line + 0, 0),
-    #    "esettings": (e_base_line + 1, 0),
-    #    "speedcontrol": (e_base_line + 2, 0),
-    #    "flowcontrol": (e_base_line + 3, 0),
-    #    "htemp_gauge": (gauges_base_line + 0, 0),
-    #    "btemp_gauge": (gauges_base_line + 1, 0),
-    #    "tempdisp": (tempdisp_line, 0),
-    #    "extrude": (3, 0),
-    #    "reverse": (3, 2),
-    #    "3dpav_init": (3, 4),
-    #}
-
-    #span_mapping = {
-    #    "htemp_label": (1, 2),
-    #    "htemp_off": (1, 1),
-    #    "htemp_val": (1, 1),
-    #    "htemp_set": (1, 1 if root.display_graph else 2),
-    #    "btemp_label": (1, 2),
-    #    "btemp_off": (1, 1),
-    #    "btemp_val": (1, 1),
-    #    "btemp_set": (1, 1 if root.display_graph else 2),
-    #    "ebuttons": (1, 5 if root.display_graph else 6),
-    #    "esettings": (1, 5 if root.display_graph else 6),
-    #    "speedcontrol": (1, 5 if root.display_graph else 6),
-    #    "flowcontrol": (1, 5 if root.display_graph else 6),
-    #    "htemp_gauge": (1, 5 if mini_mode else 6),
-    #    "btemp_gauge": (1, 5 if mini_mode else 6),
-    #    "tempdisp": (1, 5 if mini_mode else 6),
-    #    "extrude": (1, 2),
-    #    "reverse": (1, 3),
-    #    "3dpav_init": (1, 4),
-    #}
-
-    #if standalone_mode:
-    #    pos_mapping["tempgraph"] = (base_line + 6, 0)
-    #    span_mapping["tempgraph"] = (3, 2)
-    #elif mini_mode:
-    #    pos_mapping["tempgraph"] = (base_line + 2, 0)
-    #    span_mapping["tempgraph"] = (1, 5)
-    #else:
-    #    pos_mapping["tempgraph"] = (base_line + 0, 5)
-    #    span_mapping["tempgraph"] = (5, 1)
-
-    #if mini_mode:
-    #    pos_mapping["etool_label"] = (0, 0)
-    #    pos_mapping["etool_val"] = (0, 1)
-    #    pos_mapping["edist_label"] = (0, 2)
-    #    pos_mapping["edist_val"] = (0, 3)
-    #    pos_mapping["edist_unit"] = (0, 4)
-    #else:
-    #    pos_mapping["edist_label"] = (0, 0)
-    #    pos_mapping["edist_val"] = (1, 0)
-    #    pos_mapping["edist_unit"] = (1, 1)
-    #    pos_mapping["efeed_label"] = (0, 2)
-    #    pos_mapping["efeed_val"] = (1, 2)
-    #    pos_mapping["efeed_unit"] = (1, 3)
-
-    #def add(name, widget, *args, **kwargs):
-    #    kwargs["pos"] = pos_mapping[name]
-    #    if name in span_mapping:
-    #        kwargs["span"] = span_mapping[name]
-    #    if "container" in kwargs:
-    #        container = kwargs["container"]
-    #        del kwargs["container"]
-    #    else:
-    #        container = self
-    #    container.Add(widget, *args, **kwargs)
-
-def add_extra_controls(self, root, parentpanel, extra_buttons = None, mini_mode = False):
-    standalone_mode = extra_buttons is not None
-    base_line = 1 if standalone_mode else 2
-
     if standalone_mode:
         gauges_base_line = base_line + 10
     elif mini_mode and root.display_graph:
@@ -183,6 +90,118 @@ def add_extra_controls(self, root, parentpanel, extra_buttons = None, mini_mode 
         "extrude": (1, 2),
         "reverse": (1, 3),
         "3dpav_init": (1, 4),
+    }
+
+    if standalone_mode:
+        pos_mapping["tempgraph"] = (base_line + 6, 0)
+        span_mapping["tempgraph"] = (3, 2)
+    elif mini_mode:
+        pos_mapping["tempgraph"] = (base_line + 2, 0)
+        span_mapping["tempgraph"] = (1, 5)
+    else:
+        pos_mapping["tempgraph"] = (base_line + 0, 5)
+        span_mapping["tempgraph"] = (5, 1)
+
+    #if mini_mode:
+    #    pos_mapping["etool_label"] = (0, 0)
+    #    pos_mapping["etool_val"] = (0, 1)
+    #    pos_mapping["edist_label"] = (0, 2)
+    #    pos_mapping["edist_val"] = (0, 3)
+    #    pos_mapping["edist_unit"] = (0, 4)
+    #else:
+    #    pos_mapping["edist_label"] = (0, 0)
+    #    pos_mapping["edist_val"] = (1, 0)
+    #    pos_mapping["edist_unit"] = (1, 1)
+    #    pos_mapping["efeed_label"] = (0, 2)
+    #    pos_mapping["efeed_val"] = (1, 2)
+    #    pos_mapping["efeed_unit"] = (1, 3)
+
+    def add(name, widget, *args, **kwargs):
+        kwargs["pos"] = pos_mapping[name]
+        if name in span_mapping:
+            kwargs["span"] = span_mapping[name]
+        if "container" in kwargs:
+            container = kwargs["container"]
+            del kwargs["container"]
+        else:
+            container = self
+        container.Add(widget, *args, **kwargs)
+
+    # Temperature (M105) feedback display #
+    root.tempdisp = wx.StaticText(parentpanel, -1, "", style = wx.ST_NO_AUTORESIZE)
+
+    def on_tempdisp_size(evt):
+        root.tempdisp.Wrap(root.tempdisp.GetSize().width)
+    root.tempdisp.Bind(wx.EVT_SIZE, on_tempdisp_size)
+
+    def tempdisp_setlabel(label):
+        wx.StaticText.SetLabel(root.tempdisp, label)
+        root.tempdisp.Wrap(root.tempdisp.GetSize().width)
+        root.tempdisp.SetSize((-1, root.tempdisp.GetBestSize().height))
+    root.tempdisp.SetLabel = tempdisp_setlabel
+    add("tempdisp", root.tempdisp, flag = wx.EXPAND)
+
+    # Temperature graph #
+
+    if root.display_graph:
+        root.graph = Graph(parentpanel, wx.ID_ANY, root)
+        add("tempgraph", root.graph, flag = wx.EXPAND | wx.ALL, border = 5)
+        root.graph.Bind(wx.EVT_LEFT_DOWN, root.graph.show_graph_window)
+
+def add_extra_controls(self, root, parentpanel, extra_buttons = None, mini_mode = False):
+    standalone_mode = extra_buttons is not None
+    base_line = 1 if standalone_mode else 2
+
+    if standalone_mode:
+        gauges_base_line = base_line + 10
+    elif mini_mode and root.display_graph:
+        gauges_base_line = base_line + 7
+    else:
+        gauges_base_line = base_line + 6
+    tempdisp_line = gauges_base_line + (2 if root.display_gauges else 0)
+    if mini_mode and root.display_graph:
+        e_base_line = base_line + 3
+    else:
+        e_base_line = base_line + 2
+
+    pos_mapping = {
+        "htemp_label": (base_line + 0, 0),
+        "htemp_off": (base_line + 0, 2),
+        "htemp_val": (base_line + 0, 3),
+        "htemp_set": (base_line + 0, 4),
+        "btemp_label": (base_line + 1, 0),
+        "btemp_off": (base_line + 1, 2),
+        "btemp_val": (base_line + 1, 3),
+        "btemp_set": (base_line + 1, 4),
+        "ebuttons": (e_base_line + 0, 0),
+        "esettings": (e_base_line + 1, 0),
+        "speedcontrol": (e_base_line + 2, 0),
+        "flowcontrol": (e_base_line + 3, 0),
+        "htemp_gauge": (gauges_base_line + 0, 0),
+        "btemp_gauge": (gauges_base_line + 1, 0),
+        "tempdisp": (tempdisp_line, 0),
+        "extrude": (3, 0),
+        "reverse": (3, 2),
+    }
+
+    span_mapping = {
+        "htemp_label": (1, 2),
+        "htemp_off": (1, 1),
+        "htemp_val": (1, 1),
+        "htemp_set": (1, 1 if root.display_graph else 2),
+        "btemp_label": (1, 2),
+        "btemp_off": (1, 1),
+        "btemp_val": (1, 1),
+        "btemp_set": (1, 1 if root.display_graph else 2),
+        "ebuttons": (1, 5 if root.display_graph else 6),
+        "esettings": (1, 5 if root.display_graph else 6),
+        "speedcontrol": (1, 5 if root.display_graph else 6),
+        "flowcontrol": (1, 5 if root.display_graph else 6),
+        "htemp_gauge": (1, 5 if mini_mode else 6),
+        "btemp_gauge": (1, 5 if mini_mode else 6),
+        "tempdisp": (1, 5 if mini_mode else 6),
+        "extrude": (1, 2),
+        "reverse": (1, 3),
     }
 
     if standalone_mode:
@@ -507,8 +526,8 @@ class ControlsSizer(wx.GridBagSizer):
                         "reverse": (1, 3),
                         }
         for key, desc in root.cpbuttons.items():
-            if not standalone_mode and key in ["extrude", "reverse", "3dpav_init"]:
-                continue
+            #if not standalone_mode and key in ["extrude", "reverse", "3dpav_init"]:
+            #    continue
             panel = lltspanel if key == "motorsoff" else parentpanel
             btn = make_custom_button(root, panel, desc)
             #if key == "motorsoff":

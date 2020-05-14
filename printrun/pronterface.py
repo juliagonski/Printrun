@@ -167,7 +167,7 @@ class PronterWindow(MainWindow, pronsole.pronsole):
             #"motorsoff": SpecialButton(_("Motors off"), ("M84"), (250, 250, 250), _("Switch all motors off")),
             #"extrude": SpecialButton(_("Extrude"), ("pront_extrude"), (225, 200, 200), _("Advance extruder by set length")),
             #"reverse": SpecialButton(_("Reverse"), ("pront_reverse"), (225, 200, 200), _("Reverse extruder by set length")),
-            "3dpav_init": SpecialButton(_("3DPaV_init"), ("3dpav_init"), (225, 200, 200), _("initialize 3dpav protocol")),
+            "3dpav_init": SpecialButton(_("3DPaV Initialize"), ("3dpav_init"), (225, 200, 200), _("initialize 3dpav protocol")),
         }
         self.custombuttons = []
         self.btndict = {}
@@ -421,12 +421,10 @@ class PronterWindow(MainWindow, pronsole.pronsole):
         self.do_extrude_final(- self.edist.GetValue(), feed)
 
     def do_3dpav_init(self, l = ""):
-        print('julia 3dpav init!')
-        #if self.p.printing and not self.paused:
-        #    self.log(_("Please pause or stop print before extruding."))
-        #    return
-        #feed = self.settings.e_feedrate
-        #self.do_extrude_final(self.edist.GetValue(), feed)
+        if self.p.printing and not self.paused:
+            self.log(_("Please pause or stop print before setting up 3DPaV protocol."))
+            return
+        self.do_3dpavinit_final()
 
     def do_settemp(self, l = ""):
         try:
