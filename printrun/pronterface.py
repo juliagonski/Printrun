@@ -169,6 +169,7 @@ class PronterWindow(MainWindow, pronsole.pronsole):
             #"reverse": SpecialButton(_("Reverse"), ("pront_reverse"), (225, 200, 200), _("Reverse extruder by set length")),
             "3dpav_init": SpecialButton(_("3DPaV Initialize"), ("3dpav_init"), (225, 200, 200), _("initialize 3dpav protocol")),
             "run": SpecialButton(_("Run 400mL 16BPM"), ("run"), (225, 200, 200), _("run 400mL_16BPM")),
+            "stop": SpecialButton(_("Stop"), ("stop"), (225, 200, 200), _("stop current ventilation run")),
         }
         self.custombuttons = []
         self.btndict = {}
@@ -432,6 +433,12 @@ class PronterWindow(MainWindow, pronsole.pronsole):
             self.log(_("Please pause or stop print before starting a new run."))
             return
         self.do_run_final()
+
+    def do_stop(self, l = ""):
+        self.p.printing = 0
+        self.p.pause()
+        self.log(_("Stopping printing, paused"))
+        return
 
     def do_settemp(self, l = ""):
         try:
@@ -1257,7 +1264,8 @@ Printrun. If not, see <http://www.gnu.org/licenses/>."""
             return
         self.sdprinting = False
         self.on_startprint()
-        self.p.startprint(self.fgcode)
+        #self.p.startprint(self.fgcode)
+        self.p.loopprint(self.fgcode)
 
     def sdprintfile(self, event):
         self.extra_print_time = 0

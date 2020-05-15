@@ -148,6 +148,24 @@ def add_3dpav_controls(self, root, parentpanel, extra_buttons = None, mini_mode 
         add("tempgraph", root.graph, flag = wx.EXPAND | wx.ALL, border = 5)
         root.graph.Bind(wx.EVT_LEFT_DOWN, root.graph.show_graph_window)
 
+    #add("tv_label", wx.StaticText(esettingspanel, -1, _("Tidal Volume:")), container = esettingssizer, flag = wx.ALIGN_LEFT)
+    #root.TV = wx.ComboBox(parentpanel, -1,
+    #                    choices = ["300", "400", "500", "750",
+    #                               "900", "1000"],
+    #                    style = wx.CB_DROPDOWN, size = (110, -1))
+    ##add("rr_label", wx.StaticText(esettingspanel, -1, _("Respiratory Rate:")), container = esettingssizer, flag = wx.ALIGN_LEFT)
+    #root.RR = wx.ComboBox(parentpanel, 1,
+    #                    choices = ["12", "16", "32"],
+    #                    style = wx.CB_DROPDOWN, size = (120, -1))
+    ##add("ie_label", wx.StaticText(esettingspanel, -1, _("Inspiratory/Expiratory Ratio:")), container = esettingssizer, flag = wx.ALIGN_LEFT)
+    #root.IE = wx.ComboBox(parentpanel, 3,
+    #                    choices = ["1" ],
+    #                    style = wx.CB_DROPDOWN, size = (130, -1))
+    #root.TV.SetToolTip(wx.ToolTip(_("Select tidal volume")))
+    #root.RR.SetToolTip(wx.ToolTip(_("Select respiratory rate")))
+    #root.IE.SetToolTip(wx.ToolTip(_("Select inspiratory/expiratory ratio")))
+
+
 def add_extra_controls(self, root, parentpanel, extra_buttons = None, mini_mode = False):
     standalone_mode = extra_buttons is not None
     base_line = 1 if standalone_mode else 2
@@ -518,12 +536,14 @@ class ControlsSizer(wx.GridBagSizer):
         pos_mapping = {
                        "3dpav_init": (4, 0),
                        "run": (4, 2),
+                       "stop": (6, 2),
                        #"extrude": (4, 0),
                        #"reverse": (4, 2),
                        }
         span_mapping = {
                         "3dpav_init": (1, 2),
                         "run": (1, 3),
+                        "stop": (2, 3),
                         #"extrude": (1, 2),
                         #"reverse": (1, 3),
                         }
