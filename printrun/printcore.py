@@ -498,17 +498,24 @@ class printcore():
             return True
         self.clear = False
         resuming = (startindex != 0)
-        for i in gcode.lines:
-            print('line in gcode: ', i.raw)
-            #l1 = i.split("\n")[0]
-            #l2 = i.split("\n")[1]
-            #print('line 1: ', l1, ", line2: ", l2)
+        #for now, only ever expect 2 lines: inspiratory, expiratory
+        l1 = gcode.lines[0].raw
+        l2 = gcode.lines[1].raw
+        #for i in gcode.lines:
+        #    print('line in gcode: ', i.raw)
+        #    l1 = i.split("\n")[0]
+        #    l2 = i.split("\n")[1]
+        while not self.paused and self._listen_can_continue():
+            print('line 1: ', l1, ", line2: ", l2)
+            #self.send(l1)
+            #self.send(l2)
+            #self._listen
             #l = l[:l.find(";")]  # remove comments
             #self.send_now(l)
-        #self.print_thread = threading.Thread(target = self._print,
-                                             #name = 'print thread',
-                                             #kwargs = {"resuming": resuming})
-        #self.print_thread.start()
+            self.print_thread = threading.Thread(target = self._print,
+                                                name = 'print thread',
+                                                kwargs = {"resuming": resuming})
+            self.print_thread.start()
 
     def startprint(self, gcode, startindex = 0):
         """Start a print, gcode is an array of gcode commands.
@@ -517,6 +524,7 @@ class printcore():
         the next line will be set to 0 and the firmware notified. Printing
         will then start in a parallel thread.
         """
+        print('printing!!!!!! ', gcode)
         if self.printing or not self.online or not self.printer:
             return False
         self.queueindex = startindex

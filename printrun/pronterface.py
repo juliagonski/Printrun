@@ -432,10 +432,26 @@ class PronterWindow(MainWindow, pronsole.pronsole):
         if self.p.printing and not self.paused:
             self.log(_("Please pause or stop print before starting a new run."))
             return
+        #fill buffer and set printing state to 1 
+        print('Hello Julia And Sam! fill buffer the first time and setting printing state to 1')
+        #self.p.printing = 1
         self.do_run_final()
 
+        #setup timer event listener here 
+        self.timer = wx.Timer(self)
+        self.Bind(wx.EVT_TIMER, self.check_run)
+        self.timer.Start(1000) 
+
+    def check_run(self, l = ""):
+       print('Hello Julia And Sam! Check run')
+       #check buffer length 
+       #if too small, add to buffer 
+       self.do_run_final()
+
+
     def do_stop(self, l = ""):
-        self.p.printing = 0
+        self.p.printing = 0 #change to new mode "ventilating"
+        #TODO kill timer 
         self.p.pause()
         self.log(_("Stopping printing, paused"))
         return
@@ -1264,8 +1280,33 @@ Printrun. If not, see <http://www.gnu.org/licenses/>."""
             return
         self.sdprinting = False
         self.on_startprint()
+        self.p.startprint(self.fgcode)
+        #while not self.paused:
+        #for i in range(5):
+        #  print('iteration ', i, ', are we currently executing? ', self.p.printing)
+        #  if self.p.printing: time.sleep(2)
+        #  self.on_startprint()
+        #  print('pause enabled!')
+        #  self.p.startprint(self.fgcode)
+        #  if self.paused: 
+        #    print('paused!')
+        #    return 
         #self.p.startprint(self.fgcode)
-        self.p.loopprint(self.fgcode)
+        #time.sleep(1)
+        #if self.paused: 
+        #  print('paused!')
+        #  return 
+        #self.p.startprint(self.fgcode)
+        #time.sleep(1)
+        #if self.paused: 
+        #  print('paused!')
+        #  return 
+        #self.p.startprint(self.fgcode)
+        #time.sleep(1)
+        #if self.paused: 
+        #  print('paused!')
+        #  return 
+        #self.p.loopprint(self.fgcode)
 
     def sdprintfile(self, event):
         self.extra_print_time = 0
