@@ -1662,17 +1662,23 @@ class pronsole(cmd.Cmd):
                 extruder = self.current_tool)
 
     def do_run_final(self):
-        self.log(_("Running ventilation protocol, use ^C to interrupt (just 2 iterations for now)."))
-        self.log(_("Updating values in realtime"))
+        #self.log(_("Running ventilation protocol, use ^C to interrupt (just 2 iterations for now)."))
+        #self.log(_("Updating values in realtime"))
         try:
+            print('value of self ventilating: ', self.ventilating)
             self.log(_(";compress"))
             self.p.send("G1 F2500 Z116 Y100 E14")
             self.log(_(";decompress"))
+            print('value of self ventilating: ', self.ventilating)
             self.p.send("G1 F1250 Z130 Y145 E-14")
-            self.log(_(";compress"))
-            self.p.send("G1 F2500 Z116 Y100 E14")
-            self.log(_(";decompress"))
-            self.p.send("G1 F1250 Z130 Y145 E-14")
+            self.log(_(";M400"))
+            self.p.send("M400")
+            print('value of self ventilating: ', self.ventilating)
+            #self.log(_(";compress"))
+            #self.p.send("G1 F2500 Z116 Y100 E14")
+            #self.log(_(";decompress"))
+            #self.p.send("G1 F1250 Z130 Y145 E-14")
+            self.ventilating = 0
         except KeyboardInterrupt:
             if self.silent is False: self.log(_("Done ventilating."))
 
@@ -1718,6 +1724,8 @@ class pronsole(cmd.Cmd):
       self.p.send("G1 F2000 Y150")
       self.log(_(";move y to decompress position"))
       self.p.send("M0 ADD BUNGEE TO CONT.")
+      self.log(_(";M400"))
+      self.p.send("M400")
       self.log(_("----- Done initializing!"))
       self.log(_(""))
 

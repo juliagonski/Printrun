@@ -249,6 +249,15 @@ class PronterWindow(MainWindow, pronsole.pronsole):
         if self.settings.monitor:
             self.update_monitor()
 
+        ##### jgsd add 
+        self.ventilating = 0
+        self.startedRun = 0
+
+        #setup timer event listener here 
+        self.timer = wx.Timer(self)
+        self.Bind(wx.EVT_TIMER, self.check_run)
+        self.timer.Start(5000) 
+
     #  --------------------------------------------------------------
     #  Main interface handling
     #  --------------------------------------------------------------
@@ -432,28 +441,40 @@ class PronterWindow(MainWindow, pronsole.pronsole):
         if self.p.printing and not self.paused:
             self.log(_("Please pause or stop print before starting a new run."))
             return
-        #fill buffer and set printing state to 1 
-        print('Hello Julia And Sam! fill buffer the first time and setting printing state to 1')
-        #self.p.printing = 1
+        #fill buffer and set ventilating to 1 
+        print('Starting ventilation protocol')
+        self.startedRun = 1
+        self.ventilating = 1
         self.do_run_final()
+        #self.do_run_final()
+        #self.do_run_final()
 
-        #setup timer event listener here 
-        self.timer = wx.Timer(self)
-        self.Bind(wx.EVT_TIMER, self.check_run)
-        self.timer.Start(1000) 
 
     def check_run(self, l = ""):
-       print('Hello Julia And Sam! Check run')
-       #check buffer length 
-       #if too small, add to buffer 
-       self.do_run_final()
+       if self.startedRun == 1 and self.ventilating == 0:
+         #print('ventilating now! Checking priqueue length: ', self.p.priqueue.qsize())
+         #check buffer length; if too small, add to buffer 
+         #if self.p.priqueue.qsize() < 10: self.do_run_final()
+         self.p.send("M400")
+         self.do_run_final()
+         #self.do_run_final()
+         #self.do_run_final()
+         #self.do_run_final()
+         #self.p.send("M400")
+       else: print('not adding more runs')
+
+       #else return  #if not breathing, timer does nothing  
 
 
     def do_stop(self, l = ""):
-        self.p.printing = 0 #change to new mode "ventilating"
-        #TODO kill timer 
-        self.p.pause()
-        self.log(_("Stopping printing, paused"))
+        self.ventilating = 0 
+        self.log(_("Stopping ventilating; last move is to decompress"))
+        self.log(_(";decompress"))
+        self.p.send("G1 F1250 Z130 Y145 E-14")
+        self.log(_(";M400"))
+        self.p.send("M400")
+        #TODO flush buffer, by ensuring that we end on an exhale (remove 2s of lines from buffer?)
+        #self.p.pause() 
         return
 
     def do_settemp(self, l = ""):
