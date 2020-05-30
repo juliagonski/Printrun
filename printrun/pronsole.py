@@ -1664,23 +1664,31 @@ class pronsole(cmd.Cmd):
     def do_run_final(self):
         #self.log(_("Running ventilation protocol, use ^C to interrupt (just 2 iterations for now)."))
         #self.log(_("Updating values in realtime"))
-        try:
-            print('value of self ventilating: ', self.ventilating)
-            self.log(_(";compress"))
-            self.p.send("G1 F2500 Z116 Y100 E14")
-            self.log(_(";decompress"))
-            print('value of self ventilating: ', self.ventilating)
-            self.p.send("G1 F1250 Z130 Y145 E-14")
-            self.log(_(";M400"))
-            self.p.send("M400")
-            print('value of self ventilating: ', self.ventilating)
-            #self.log(_(";compress"))
-            #self.p.send("G1 F2500 Z116 Y100 E14")
-            #self.log(_(";decompress"))
-            #self.p.send("G1 F1250 Z130 Y145 E-14")
-            self.ventilating = 0
-        except KeyboardInterrupt:
-            if self.silent is False: self.log(_("Done ventilating."))
+
+        #self.p.printer.write(str.encode('G1 F2500 Z116 Y100 E14\n'))
+        #self.p.printer.write(str.encode('G1 F1250 Z130 Y145 E-14\n'))
+        self.p.printer.write(str.encode('M400\n'))
+        time.sleep(0.1)  # Allow time for response
+
+        #try:
+        #    self.ventilating = 1
+        #    print('start, value of self ventilating: ', self.ventilating)
+        #    self.log(_(";compress"))
+        #    self.p.send("G1 F2500 Z116 Y100 E14")
+        #    self.log(_(";decompress"))
+        #    self.p.send("G1 F1250 Z130 Y145 E-14")
+        #    self.log(_(";M400"))
+        #    self.p.send("M400")
+        #    #self.p.write(str.encode('M400\n'))
+        #    print('M400, value of self ventilating: ', self.ventilating)
+        #    #self.log(_(";compress"))
+        #    #self.p.send("G1 F2500 Z116 Y100 E14")
+        #    #self.log(_(";decompress"))
+        #    #self.p.send("G1 F1250 Z130 Y145 E-14")
+        #    self.ventilating = 0
+        #    print('end, value of self ventilating: ', self.ventilating)
+        #except KeyboardInterrupt:
+        #    if self.silent is False: self.log(_("Done ventilating."))
 
 
     def do_3dpavinit_final(self):

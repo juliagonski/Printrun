@@ -18,6 +18,7 @@ import platform
 import queue
 import sys
 import time
+import serial
 import threading
 import traceback
 import io as StringIO
@@ -256,7 +257,7 @@ class PronterWindow(MainWindow, pronsole.pronsole):
         #setup timer event listener here 
         self.timer = wx.Timer(self)
         self.Bind(wx.EVT_TIMER, self.check_run)
-        self.timer.Start(5000) 
+        self.timer.Start(1000) 
 
     #  --------------------------------------------------------------
     #  Main interface handling
@@ -438,25 +439,55 @@ class PronterWindow(MainWindow, pronsole.pronsole):
         self.do_3dpavinit_final()
 
     def do_run(self, l = ""):
-        if self.p.printing and not self.paused:
-            self.log(_("Please pause or stop print before starting a new run."))
-            return
-        #fill buffer and set ventilating to 1 
-        print('Starting ventilation protocol')
-        self.startedRun = 1
-        self.ventilating = 1
-        self.do_run_final()
+        #if self.p.printing and not self.paused:
+        #    self.log(_("Please pause or stop print before starting a new run."))
+        #    return
+        ##fill buffer and set ventilating to 1 
+        #print('Starting ventilation protocol')
+        #self.startedRun = 1
+        ##self.ventilating = 1
+
+        #self.p.printer.write(str.encode('M400\n'))
+        #self.p.printer.write(str.encode('M400\n'))
+        #time.sleep(0.1)  # Allow time for response
+        #print("Ok response from printer?")
+        #response = self.p.printer.readline() 
+        #print(response)
+
+
+
         #self.do_run_final()
         #self.do_run_final()
+        #self.do_run_final()
+      
+        #----------- testSerial.py
+        ser_printer = serial.Serial('/Users/juliagonski/Documents/Columbia/3DprinterAsVentilator/pronsoleWork/Printator/sim', 115200)
+        print("Connecting to printer...")
+        time.sleep(5)  # Allow time for response
+        buffer_bytes = ser_printer.inWaiting()
+        response = ser_printer.read(buffer_bytes)  # Read data in the buffer
+        print("Connection response from printer:")
+        print(response)
+        print("Asking for done moving okay...")
+        #ser_printer.write('M105\n')
+        ser_printer.write(str.encode('M400\n'))
+        time.sleep(0.1)  # Allow time for response
+        print("Ok response from printer:")
+        response = ser_printer.readline()
+        print(response)
 
 
     def check_run(self, l = ""):
+       return
        if self.startedRun == 1 and self.ventilating == 0:
+          print("Ok response from printer?")
+          response = self.p.printer.readline() 
+          print(response)
          #print('ventilating now! Checking priqueue length: ', self.p.priqueue.qsize())
          #check buffer length; if too small, add to buffer 
          #if self.p.priqueue.qsize() < 10: self.do_run_final()
-         self.p.send("M400")
-         self.do_run_final()
+         #self.p.send("M400")
+         #self.do_run_final()
          #self.do_run_final()
          #self.do_run_final()
          #self.do_run_final()
@@ -468,6 +499,7 @@ class PronterWindow(MainWindow, pronsole.pronsole):
 
     def do_stop(self, l = ""):
         self.ventilating = 0 
+        self.startedRun = 0 
         self.log(_("Stopping ventilating; last move is to decompress"))
         self.log(_(";decompress"))
         self.p.send("G1 F1250 Z130 Y145 E-14")
